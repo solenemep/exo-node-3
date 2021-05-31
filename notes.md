@@ -42,4 +42,4 @@ anticipation de nouvelles fonctionnalités et bonus: 3
 
 20/20  
 Travail excellent comme d'habitude.
-Ne pas hésiter à s'amuser avec le code et aller au dela des consignes pour web-info.js.
+Ne pas hésiter à s'amuser avec le code et aller au delà des consignes pour web-info.js.
