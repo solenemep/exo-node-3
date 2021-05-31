@@ -1,3 +1,6 @@
+/*
+Correction: Un fichier JSON généré avec des informations supplémentaires aurait été cool (ex: urls externes, urls internes, link des images etc etc)
+*/
 const axios = require('axios')
 const { JSDOM } = require('jsdom')
 const fsPromises = require('fs/promises')
@@ -11,16 +14,23 @@ if (process.argv.length !== 3) {
 // get info from url
 const getInfo = async (url) => {
   try {
-
     const response = await axios.get(url)
 
     const dom = new JSDOM(response.data)
     const contentType = dom.window.document.contentType
-    const contentLength = dom.window.document.querySelector('html').outerHTML.length
+    const contentLength =
+      dom.window.document.querySelector('html').outerHTML.length
     const titleTag = dom.window.document.querySelector('title')
     const aTag = dom.window.document.querySelectorAll('a')
     const imgTag = dom.window.document.querySelectorAll('img')
-    const info = { url: url, contentType: contentType, contentLength: contentLength, title: titleTag.textContent, nbUrls: aTag.length, nbImgs: imgTag.length }
+    const info = {
+      url: url,
+      contentType: contentType,
+      contentLength: contentLength,
+      title: titleTag.textContent,
+      nbUrls: aTag.length,
+      nbImgs: imgTag.length,
+    }
     return info
   } catch (e) {
     throw new Error('cannot get info, check if url is valid')
@@ -32,12 +42,13 @@ const createJson = async (info) => {
   try {
     // console.log(JSON.stringify(info, null, 4))
     const title = info.title.split(' ')[0]
-    await fsPromises.appendFile(`./${title}.json`, JSON.stringify(info, null, 4))
+    // Correction: Attention append n'est pas vraiment le comportement que l'on souhaite
+    // Ecraser le fichier précédent si il existe déjà serait plus pertinent
+    await fsPromises.appendFile(JSON.stringify(info, null, 4))
   } catch (e) {
     throw new Error('json cannot be created')
   }
 }
-
 
 const main = async () => {
   try {
